@@ -1,6 +1,11 @@
 # Hash Game (Jogo da velha)
 
-### Simple hash game with react
+### Simple hash game with react agains bot
+
+Rules
+1. You always plays as circle
+2. There's a 50% chance of you starting the game
+
 
 ## Examples
 
@@ -11,7 +16,7 @@
 ```
     cd ~/your-directory
     git clone https://github.com/AbimaelAndrade/react-hash-game.git ./
-    npm install
+    npm install    
 ```
 
 ## Execute
