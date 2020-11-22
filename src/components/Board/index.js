@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Square from '../Square'
 import './board.css'
-import { playBot, playBot2 } from './ai'
+import { playBot2 } from './ai'
 
 class Board extends Component {
   
