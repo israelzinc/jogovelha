@@ -63,9 +63,38 @@ function makeInitialPlayIfNeeded(squares) {
     return null
 }
 
-function playCorner(squares) {
-    const corners = getCorners();    
-    const candidates = corners.filter(e=>squares[e]==null)        
+function getPlayerCrosses(squares,player="O") {
+    let crosses = getCrosses();
+    let b =  crosses.map(e=>squares[e])    
+    b = getAllIndexes(b,player)
+    return b
+}
+
+function getCornerNearCross(crosses) {
+    const corners = getCorners();   
+    let dt = [];
+    crosses.forEach(c => {
+        if(c == 1) {
+          dt.push(0)
+          dt.push(2)
+        } else if (c == 3) {
+            dt.push(0)
+            dt.push(6)
+        } else if (c == 5) {
+            dt.push(2)
+            dt.push(8)
+        } else if (c == 3) {
+            dt.push(6)
+            dt.push(8)
+        }
+    })
+    return [...new Set(dt)];    
+}
+
+function playCorner(squares, opposition) {    
+    const oppositionCrossess = getPlayerCrosses(squares,opposition)    
+    let candidates = getCornerNearCross(oppositionCrossess);    
+    candidates = candidates.filter(e=>squares[e]==null)            
     return candidates[0];
 }
 
@@ -133,9 +162,9 @@ function blockUserIfNecessary(squares, opposition="O") {
     return null;
 }
 
-export function playBot2(squares) {
-    let opposition = "O";
-    let player = "X";   
+export function playBot2(squares, player="X") {    
+    let opposition = player=="X"?"O":"X";
+    // let player = "X";   
 
     let returnIdx = makeInitialPlayIfNeeded(squares);    
     if (returnIdx !== null) { return returnIdx; }
@@ -147,7 +176,7 @@ export function playBot2(squares) {
     if (returnIdx !== null) { return returnIdx}
 
     if (shouldPlayCorner(squares, opposition)) {        
-        return playCorner(squares);
+        return playCorner(squares,opposition);
     } else {        
         return playCross(squares);
     }    

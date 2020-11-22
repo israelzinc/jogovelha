@@ -7,16 +7,22 @@ class Board extends Component {
   
   state = {
       squares: Array(9).fill(null),
-      xIsNext: false,
+      xIsNext: false
   }
 
   botPlay(){
-    if(this.state.xIsNext) {      
-      // let idx = playBot(this.state.squares)      
-      let idx = playBot2(this.state.squares)      
-      this.handleClick(idx)
-      
+    if(this.state.squares.filter(e=>e==null).length < 1) {
+      return
     }
+    if(this.state.xIsNext) {      
+      // let idx = playBot(this.state.squares)            
+      let idx = playBot2(this.state.squares)              
+      this.handleClick(idx)
+    } 
+    // } else {      
+    //   let idx = playBot2(this.state.squares,"O")      
+    //   this.handleClick(idx)
+    // }
     
   }  
 
@@ -24,7 +30,7 @@ class Board extends Component {
     const squares = this.state.squares.slice()
     const winner = this.calculateWinner(squares)
     
-    if (winner || squares[i]) {
+    if (winner || squares[i]) {      
       return;
     }
 
@@ -63,7 +69,7 @@ class Board extends Component {
     let classCss = ''
     
     if (winner) {
-      classCss = winner ? (winner.indexOf(index) !== -1 ? 'square-score' : '') : ''
+      classCss = winner ? (winner.indexOf(index) !== -1 ? 'square-score' : '') : ''            
     } else {
       if (squares.indexOf(null) === -1) {
         classCss = 'square-draw'
@@ -85,9 +91,10 @@ class Board extends Component {
 
   restart() {
     let whoStart = Math.floor(Math.random() * 2);    
+    // let whoStart = 0;
     this.setState({
       squares: Array(9).fill(null),
-      xIsNext: whoStart===0?true:false,
+      xIsNext: whoStart===0?true:false,      
       // xIsNext:false
     })
   }
@@ -112,7 +119,7 @@ class Board extends Component {
       }
     }
 
-    let version = '0.0.3';
+    let version = '0.0.4';
 
     return (
       <div>
