@@ -13,7 +13,7 @@ function getWinningLines(){
       ];
 }
 
-function winIfCan(squares, player) {
+function winIfCan(squares, player="X") {
     const lines = getWinningLines();
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];        
@@ -51,7 +51,7 @@ function getCrosses() {
     return [1,3,5,7]
 }
 
-function playMidIfCan(squares) {    
+function makeInitialPlayIfNeeded(squares) {    
     let empptyIndexes = getAllIndexes(squares,null)    
     if(empptyIndexes.indexOf(4) !== -1) {        
         return 4;
@@ -83,23 +83,27 @@ function isCornerAvaliable(squares) {
     return true;
 }
 
-function shouldPlayCorner(squares) {
+function hasOppositionPlayedMoreCorner(squares, opposition="O") {
+    const corners = getCorners();
+    const crosses = getCrosses();    
+    const xCorners = corners.map(e=>squares[e]).filter(e=>e===opposition);
+    const xCrosses = crosses.map(e=>squares[e]).filter(e=>e===opposition);            
+    return (xCrosses.length >= xCorners.length)
+}
+
+function shouldPlayCorner(squares, opposition) {
     if(!isCornerAvaliable(squares)) {
         return false;
     }    
-    
-    const corners = getCorners();
-    const crosses = getCrosses();    
-    const xCorners = corners.map(e=>squares[e]).filter(e=>e==="O");
-    const xCrosses = crosses.map(e=>squares[e]).filter(e=>e==="O");            
-    if(xCrosses.length >= xCorners.length) {
+        
+    if (hasOppositionPlayedMoreCorner(squares, opposition)) {
         return true;
     } else {
         return false;
     }    
 }
 
-function blockUserIfNecessary(squares, opposition) {    
+function blockUserIfNecessary(squares, opposition="O") {    
     const lines = getWinningLines();
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];        
@@ -130,19 +134,19 @@ function blockUserIfNecessary(squares, opposition) {
 }
 
 export function playBot2(squares) {
-    let opposition = "O"        
+    let opposition = "O";
+    let player = "X";   
 
-    let returnIdx = playMidIfCan(squares);
-    
+    let returnIdx = makeInitialPlayIfNeeded(squares);    
     if (returnIdx !== null) { return returnIdx; }
 
-    returnIdx = winIfCan(squares,"X")
+    returnIdx = winIfCan(squares,player)
     if(returnIdx !== null) { return returnIdx }
 
     returnIdx = blockUserIfNecessary(squares,opposition)
     if (returnIdx !== null) { return returnIdx}
 
-    if (shouldPlayCorner(squares)) {        
+    if (shouldPlayCorner(squares, opposition)) {        
         return playCorner(squares);
     } else {        
         return playCross(squares);
