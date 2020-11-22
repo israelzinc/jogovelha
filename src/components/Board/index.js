@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Square from '../Square'
 import './board.css'
-import { playBot } from './utils'
+import { playBot, playBot2 } from './ai'
 
 class Board extends Component {
   
@@ -11,11 +11,9 @@ class Board extends Component {
   }
 
   botPlay(){
-    if(this.state.xIsNext) {
-      // let allNull = getAllIndexes(this.state.squares,null)
-      // let idx = Math.floor(Math.random() * allNull.length);
-      let idx = playBot(this.state.squares)
-      // console.log("Cavalo!",idx)
+    if(this.state.xIsNext) {      
+      // let idx = playBot(this.state.squares)      
+      let idx = playBot2(this.state.squares)      
       this.handleClick(idx)
       
     }
@@ -114,11 +112,16 @@ class Board extends Component {
       }
     }
 
+    let version = '0.0.3';
+
     return (
       <div>
         <div className="status">
-        { reset ? <button className="btn-restart" onClick={() => this.restart()} >Reiniciar</button> : ''}
+        Version: {version}
+        <br/>
+        { reset ? <button className="btn-restart" onClick={() => this.restart()} >Restart</button> : ''}
         {status}
+        
         </div> 
           <div className="board">
             {this.renderSquare()}

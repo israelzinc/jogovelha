@@ -9,7 +9,7 @@ const Square = (props) => {
   
   return (
     <button className={`square ${classCss}`} onClick={ onClick }>
-      {value ? (value === 'X' ? <img src={X} alt="Jogador X"/> : <img src={O} alt="Jogador O"/> ) : ''}
+      {value ? (value === 'X' ? <img src={X} alt="Player X"/> : <img src={O} alt="Player O"/> ) : ''}
     </button>
   )
 }
