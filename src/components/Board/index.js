@@ -119,7 +119,7 @@ class Board extends Component {
       }
     }
 
-    let version = '0.0.4';
+    let version = '0.0.5';
 
     return (
       <div>

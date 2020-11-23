@@ -95,6 +95,12 @@ function playCorner(squares, opposition) {
     const oppositionCrossess = getPlayerCrosses(squares,opposition)    
     let candidates = getCornerNearCross(oppositionCrossess);    
     candidates = candidates.filter(e=>squares[e]==null)            
+    if(candidates.length <= 0) {
+        let corners = getCorners();
+        const pic = corners.filter(e=>squares[e]===null)
+        console.log(pic);
+        return pic[0]
+    }
     return candidates[0];
 }
 
@@ -120,10 +126,19 @@ function hasOppositionPlayedMoreCorner(squares, opposition="O") {
     return (xCrosses.length >= xCorners.length)
 }
 
+function hasMiddle(squares,player) {
+    return squares[4] === player
+}
+
 function shouldPlayCorner(squares, opposition) {
     if(!isCornerAvaliable(squares)) {
         return false;
-    }    
+    } 
+    
+    if(hasMiddle(opposition)) {
+        console.log("Opposition has middle")
+        return true;
+    }
         
     if (hasOppositionPlayedMoreCorner(squares, opposition)) {
         return true;
@@ -147,6 +162,7 @@ function blockUserIfNecessary(squares, opposition="O") {
             count++;
         }
                 
+        console.log("Count",count);
         if (count > 1) {            
             if(squares[a] === null) {
                 return a;                
@@ -159,6 +175,7 @@ function blockUserIfNecessary(squares, opposition="O") {
             }
         }
     }    
+    console.log("Not necessary to block opponent");
     return null;
 }
 
@@ -173,10 +190,13 @@ export function playBot2(squares, player="X") {
     if(returnIdx !== null) { return returnIdx }
 
     returnIdx = blockUserIfNecessary(squares,opposition)
+    console.log("Block user idx",returnIdx);
     if (returnIdx !== null) { return returnIdx}
 
     if (shouldPlayCorner(squares, opposition)) {        
-        return playCorner(squares,opposition);
+        const idx = playCorner(squares,opposition);
+        console.log("Playing corner",idx)
+        return idx
     } else {        
         return playCross(squares);
     }    
