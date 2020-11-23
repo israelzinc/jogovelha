@@ -118,6 +118,14 @@ function isCornerAvaliable(squares) {
     return true;
 }
 
+function isCrossAvaliable(squares) {
+    const crosses = getCrosses();
+    if(crosses.filter(e=>squares[e]!==null).length > 3) {
+        return false;
+    }
+    return true;
+}
+
 function hasOppositionPlayedMoreCorner(squares, opposition="O") {
     const corners = getCorners();
     const crosses = getCrosses();    
@@ -127,6 +135,9 @@ function hasOppositionPlayedMoreCorner(squares, opposition="O") {
 }
 
 function hasMiddle(squares,player) {
+    console.log("player",player)
+    console.log("squares4",squares[4])
+    console.log("judg",squares[4] === player)
     return squares[4] === player
 }
 
@@ -135,9 +146,12 @@ function shouldPlayCorner(squares, opposition) {
         return false;
     } 
     
-    if(hasMiddle(opposition)) {
-        console.log("Opposition has middle")
+    if(hasMiddle(squares,opposition) || !isCrossAvaliable(squares)) {   
+        console.log("op has mid")     
         return true;
+    } else {
+        console.log("op dont have mid")     
+        return false;
     }
         
     if (hasOppositionPlayedMoreCorner(squares, opposition)) {
@@ -181,6 +195,7 @@ function blockUserIfNecessary(squares, opposition="O") {
 
 export function playBot2(squares, player="X") {    
     let opposition = player=="X"?"O":"X";
+    console.log("oppp",opposition)
     // let player = "X";   
 
     let returnIdx = makeInitialPlayIfNeeded(squares);    
